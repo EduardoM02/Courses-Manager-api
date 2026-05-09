@@ -1,32 +1,32 @@
 # CourseManager API
 
-API REST para la gestión completa de cursos en línea. Permite a los instructores crear y administrar cursos, módulos y lecciones, mientras que los estudiantes pueden enrollarse y rastrear su progreso.
+REST API for complete online course management. Allows instructors to create and manage courses, modules, and lessons, while students can enroll and track their progress.
 
-## ✨ Características
+## ✨ Features
 
-- 👤 **Autenticación y Autorización** - Sistema JWT con roles (Admin, Instructor, Student)
-- 📚 **Gestión de Cursos** - Crear, editar, publicar y eliminar cursos
-- 📖 **Módulos y Lecciones** - Organiza el contenido en módulos con lecciones ordenadas
-- 📝 **Enrollamiento** - Los estudiantes se pueden inscribir en cursos publicados
-- 📊 **Progreso de Lecciones** - Rastreo del progreso de cada estudiante por lección
-- 🔒 **Base de Datos PostgreSQL** - Persistencia confiable con SQLAlchemy ORM
+- 👤 **Authentication & Authorization** - JWT system with roles (Admin, Instructor, Student)
+- 📚 **Course Management** - Create, edit, publish, and delete courses
+- 📖 **Modules & Lessons** - Organize content into modules with ordered lessons
+- 📝 **Enrollment** - Students can register for published courses
+- 📊 **Lesson Progress** - Track each student's progress by lesson
+- 🔒 **PostgreSQL Database** - Reliable persistence with SQLAlchemy ORM
 
-## 🚀 Requisitos Previos
+## 🚀 Prerequisites
 
 - Python 3.10+
 - PostgreSQL 12+
-- pip (gestor de paquetes de Python)
+- pip (Python package manager)
 
-## 📦 Instalación
+## 📦 Installation
 
-### 1. Clonar el repositorio
+### 1. Clone the repository
 
 ```bash
-git clone <tu-repositorio>
+git clone <your-repository>
 cd CourseManager
 ```
 
-### 2. Crear y activar entorno virtual
+### 2. Create and activate virtual environment
 
 ```bash
 # Windows (PowerShell)
@@ -38,124 +38,124 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Instalar dependencias
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configurar variables de entorno
+### 4. Configure environment variables
 
-Copia el archivo `example.env` a `.env` y completa los valores:
+Copy the `example.env` file to `.env` and complete the values:
 
 ```bash
 cp app/example.env .env
 ```
 
-Edita `.env` con tus valores:
+Edit `.env` with your values:
 
 ```env
 PORT=8000
 HOST=localhost
 DATABASE_URL=postgresql://user:password@localhost:5432/coursemanager
-SECRET_KEY=tu-clave-secreta-muy-segura-aqui
+SECRET_KEY=your-very-secure-secret-key-here
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-### 5. Crear la base de datos
+### 5. Create the database
 
 ```bash
 createdb coursemanager
 ```
 
-### 6. Ejecutar las migraciones
+### 6. Run migrations
 
 ```bash
-# Si tienes alembic configurado
+# If you have alembic configured
 alembic upgrade head
 
-# O usa el script de inicialización
+# Or use the initialization script
 python -m app.scripts.create_admin
 ```
 
-## 🏃 Ejecutar la aplicación
+## 🏃 Running the application
 
 ```bash
-# Desarrollo con recarga automática
+# Development with auto-reload
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Producción
+# Production
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-La API estará disponible en: `http://localhost:8000`
+The API will be available at: `http://localhost:8000`
 
-## 📚 Documentación de API
+## 📚 API Documentation
 
-Una vez que la aplicación está corriendo, accede a:
+Once the application is running, access:
 
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
-## 🏗 Estructura del Proyecto
+## 🏗 Project Structure
 
 ```
 CourseManager/
 ├── app/
 │   ├── api/
 │   │   └── v1/
-│   │       ├── endpoints/        # Rutas por recurso
+│   │       ├── endpoints/        # Routes by resource
 │   │       │   ├── auth.py
 │   │       │   ├── courses.py
 │   │       │   ├── enrollment.py
 │   │       │   └── users.py
 │   │       └── router.py
 │   ├── core/
-│   │   ├── enums.py              # Enumeraciones (RoleType)
-│   │   ├── exceptions.py         # Excepciones personalizadas
-│   │   ├── security.py           # Utilidades JWT
+│   │   ├── enums.py              # Enumerations (RoleType)
+│   │   ├── exceptions.py         # Custom exceptions
+│   │   ├── security.py           # JWT utilities
 │   │   └── exception_handlers.py
 │   ├── db/
-│   │   ├── session.py            # Configuración de sesión
-│   │   └── settings.py           # Variables de entorno
-│   ├── models/                   # Modelos SQLAlchemy
+│   │   ├── session.py            # Session configuration
+│   │   └── settings.py           # Environment variables
+│   ├── models/                   # SQLAlchemy models
 │   │   ├── user.py
 │   │   ├── course.py
 │   │   ├── module.py
 │   │   ├── lesson.py
 │   │   ├── enrollment.py
 │   │   └── lesson_progress.py
-│   ├── repositories/             # Capa de acceso a datos
+│   ├── repositories/             # Data access layer
 │   │   ├── user_repository.py
 │   │   ├── course_repository.py
 │   │   ├── module_repository.py
 │   │   └── enrollment_repository.py
-│   ├── schemas/                  # Esquemas Pydantic para validación
+│   ├── schemas/                  # Pydantic schemas for validation
 │   │   ├── user_schema.py
 │   │   ├── course_schema.py
 │   │   ├── module_schema.py
 │   │   ├── lesson_schema.py
 │   │   ├── enrollment_schema.py
 │   │   └── lesson_progress_schema.py
-│   ├── services/                 # Lógica de negocio
+│   ├── services/                 # Business logic
 │   │   ├── auth_service.py
 │   │   ├── user_service.py
 │   │   ├── course_service.py
 │   │   └── enrollment_service.py
-│   ├── main.py                   # Entrada de la aplicación
-│   ├── dependencies.py           # Inyección de dependencias
+│   ├── main.py                   # Application entry point
+│   ├── dependencies.py           # Dependency injection
 │   └── example.env
 ├── .gitignore
 └── README.md
 ```
 
-## 🔐 Autenticación
+## 🔐 Authentication
 
-La API usa **JWT (JSON Web Tokens)** para autenticación:
+The API uses **JWT (JSON Web Tokens)** for authentication:
 
 ```bash
-# Registrarse
+# Register
 POST /api/v1/auth/register
 {
   "email": "user@example.com",
@@ -163,7 +163,7 @@ POST /api/v1/auth/register
   "password": "password123"
 }
 
-# Iniciar sesión
+# Login
 POST /api/v1/auth/login
 {
   "email": "user@example.com",
@@ -171,68 +171,68 @@ POST /api/v1/auth/login
 }
 ```
 
-Incluye el token en los headers:
+Include the token in headers:
 
 ```
-Authorization: Bearer <tu_token_jwt>
+Authorization: Bearer <your_jwt_token>
 ```
 
-## 📋 Endpoints Principales
+## 📋 Main Endpoints
 
-### Usuarios
-- `POST /api/v1/users` - Crear usuario (Admin)
-- `GET /api/v1/users/{user_id}` - Obtener usuario
-- `PUT /api/v1/users/{user_id}` - Actualizar usuario
-- `DELETE /api/v1/users/{user_id}` - Eliminar usuario (Admin)
+### Users
+- `POST /api/v1/users` - Create user (Admin)
+- `GET /api/v1/users/{user_id}` - Get user
+- `PUT /api/v1/users/{user_id}` - Update user
+- `DELETE /api/v1/users/{user_id}` - Delete user (Admin)
 
-### Cursos
-- `POST /api/v1/courses` - Crear curso (Instructor)
-- `GET /api/v1/courses` - Listar cursos publicados
-- `GET /api/v1/courses/{course_id}` - Obtener detalles del curso
-- `PUT /api/v1/courses/{course_id}` - Actualizar curso (Dueño)
-- `DELETE /api/v1/courses/{course_id}` - Eliminar curso (Dueño)
+### Courses
+- `POST /api/v1/courses` - Create course (Instructor)
+- `GET /api/v1/courses` - List published courses
+- `GET /api/v1/courses/{course_id}` - Get course details
+- `PUT /api/v1/courses/{course_id}` - Update course (Owner)
+- `DELETE /api/v1/courses/{course_id}` - Delete course (Owner)
 
-### Enrollamiento
-- `POST /api/v1/enrollments` - Enrollarse en un curso
-- `GET /api/v1/enrollments` - Listar mis enrollamientos
-- `DELETE /api/v1/enrollments/{enrollment_id}` - Cancelar inscripción
+### Enrollment
+- `POST /api/v1/enrollments` - Enroll in a course
+- `GET /api/v1/enrollments` - List my enrollments
+- `DELETE /api/v1/enrollments/{enrollment_id}` - Cancel enrollment
 
-### Módulos
-- `POST /api/v1/modules` - Crear módulo (Instructor)
-- `GET /api/v1/modules/{course_id}` - Listar módulos de un curso
-- `PUT /api/v1/modules/{module_id}` - Actualizar módulo
+### Modules
+- `POST /api/v1/modules` - Create module (Instructor)
+- `GET /api/v1/modules/{course_id}` - List course modules
+- `PUT /api/v1/modules/{module_id}` - Update module
 
-### Lecciones
-- `POST /api/v1/lessons` - Crear lección
-- `GET /api/v1/lessons/{module_id}` - Listar lecciones de un módulo
-- `PUT /api/v1/lessons/{lesson_id}` - Actualizar lección
+### Lessons
+- `POST /api/v1/lessons` - Create lesson
+- `GET /api/v1/lessons/{module_id}` - List module lessons
+- `PUT /api/v1/lessons/{lesson_id}` - Update lesson
 
 ## 🧪 Testing
 
-Usa el archivo `test_main.http` para probar los endpoints con herramientas como REST Client o Postman.
+Use the `test_main.http` file to test endpoints with tools like REST Client or Postman.
 
-## 👥 Roles y Permisos
+## 👥 Roles & Permissions
 
-| Acción | Admin | Instructor | Student |
+| Action | Admin | Instructor | Student |
 |--------|-------|-----------|---------|
-| Crear cursos | ✅ | ✅ | ❌ |
-| Editar propio curso | ✅ | ✅ | ❌ |
-| Eliminar cualquier curso | ✅ | ❌ | ❌ |
-| Enrollarse en cursos | ❌ | ❌ | ✅ |
-| Ver progreso | ✅ | ✅ | ✅* |
+| Create courses | ✅ | ✅ | ❌ |
+| Edit own course | ✅ | ✅ | ❌ |
+| Delete any course | ✅ | ❌ | ❌ |
+| Enroll in courses | ❌ | ❌ | ✅ |
+| View progress | ✅ | ✅ | ✅* |
 
-*Los estudiantes solo ven su propio progreso
+*Students only see their own progress
 
-## 🛠 Desarrollo
+## 🛠 Development
 
-### Crear un nuevo endpoint
+### Create a new endpoint
 
-1. Define el esquema en `schemas/`
-2. Crea la ruta en `api/v1/endpoints/`
-3. Implementa la lógica en `services/`
-4. Usa el repositorio en el servicio
+1. Define schema in `schemas/`
+2. Create route in `api/v1/endpoints/`
+3. Implement logic in `services/`
+4. Use repository in the service
 
-### Ejemplo:
+### Example:
 
 ```python
 # schemas/example_schema.py
@@ -250,51 +250,51 @@ router = APIRouter(prefix="/examples", tags=["examples"])
 
 @router.post("/")
 async def create_example(schema: ExampleSchema):
-    # Lógica aquí
+    # Logic here
     pass
 ```
 
-## 📝 Convenciones de Código
+## 📝 Code Conventions
 
-- Usa type hints en todas las funciones
-- Naming en snake_case para variables y funciones
-- Naming en PascalCase para clases
-- Docstrings para funciones públicas
-- Ancho máximo de línea: 100 caracteres
+- Use type hints in all functions
+- Naming in snake_case for variables and functions
+- Naming in PascalCase for classes
+- Docstrings for public functions
+- Maximum line width: 100 characters
 
-## 🐛 Solucionar Problemas
+## 🐛 Troubleshooting
 
 ### Error: "ModuleNotFoundError"
-Asegúrate de que el entorno virtual está activado y las dependencias están instaladas:
+Make sure the virtual environment is activated and dependencies are installed:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Error: "connection refused" en PostgreSQL
-Verifica que PostgreSQL está corriendo y que `DATABASE_URL` es correcto en `.env`.
+### Error: "connection refused" in PostgreSQL
+Verify that PostgreSQL is running and `DATABASE_URL` is correct in `.env`.
 
-### Error: "InvalidRequestError" con SQLAlchemy
-Asegúrate de que `from __future__ import annotations` está al inicio de los modelos.
+### Error: "InvalidRequestError" with SQLAlchemy
+Make sure `from __future__ import annotations` is at the beginning of models.
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo licencia MIT. Ver LICENSE para más detalles.
+This project is licensed under the MIT License. See LICENSE for details.
 
-## 👨‍💻 Contribución
+## 👨‍💻 Contributing
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the repository
+2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📧 Contacto
+## 📧 Contact
 
-Para preguntas o sugerencias, abre un issue en el repositorio.
+For questions or suggestions, please open an issue in the repository.
 
 ---
 
-**Última actualización**: Mayo 2026
+**Last updated**: May 2026
 
