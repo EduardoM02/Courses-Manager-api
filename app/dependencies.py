@@ -4,9 +4,11 @@ from app.core.enums import RoleType
 from app.core.security import oauth2_scheme, SECRET_KEY, ALGORITHM
 from app.repositories.course_repository import CourseRepository
 from app.repositories.enrollment_repository import EnrollmentRepository
+from app.repositories.module_repository import ModuleRepository
 from app.services.auth_service import AuthService
 from app.services.course_service import CourseService
 from app.services.enrollment_service import EnrollmentService
+from app.services.module_service import ModuleService
 from app.services.user_service import UserService
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
@@ -40,6 +42,12 @@ def get_enrollment_repository(db = Depends(get_db)):
 
 def get_enrollment_service(repo: EnrollmentRepository = Depends(get_enrollment_repository), course_repo: CourseRepository = Depends(get_course_repository)):
     return EnrollmentService(repo, course_repo)
+
+def get_module_repository(db = Depends(get_db)):
+    return ModuleRepository(db)
+
+def get_module_service(repo: ModuleRepository = Depends(get_module_repository), course_repo: CourseRepository = Depends(get_course_repository)):
+    return ModuleService(repo, course_repo)
 
 def require_roles(*roles: RoleType):
     def role_checker(current_user: User = Depends(get_current_user)):

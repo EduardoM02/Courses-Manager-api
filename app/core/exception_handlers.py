@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from app.core.exceptions import (
     NotFoundError,
     ForbiddenError,
-    BadRequestError
+    BadRequestError, ConflictError
 )
 
 async def not_found_handler(request: Request, exc: NotFoundError):
@@ -24,5 +24,11 @@ async def forbidden_handler(request: Request, exc: ForbiddenError):
 async def bad_request_handler(request: Request, exc: BadRequestError):
     return JSONResponse(
         status_code=400,
+        content={"detail": str(exc)}
+    )
+
+async def conflict_handler(request: Request, exc: ConflictError):
+    return JSONResponse(
+        status_code=409,
         content={"detail": str(exc)}
     )

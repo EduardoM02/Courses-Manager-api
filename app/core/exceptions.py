@@ -6,3 +6,6 @@ class ForbiddenError(Exception):
 
 class BadRequestError(Exception):
     pass
+
+class ConflictError(Exception):
+    pass
