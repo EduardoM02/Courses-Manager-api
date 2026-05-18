@@ -1,8 +1,6 @@
-from typing import Annotated
 from fastapi import APIRouter
 from fastapi.params import Depends
 from app.dependencies import get_current_user, get_module_service
-from app.models import Course
 from app.models.user import User
 from app.schemas.module_schema import ModuleResponse, ModuleCreate, ModuleUpdate
 from app.services.module_service import ModuleService
@@ -16,11 +14,7 @@ def create_module(
     current_user: User = Depends(get_current_user),
     service: ModuleService = Depends(get_module_service)
 ):
-    return service.create_module(
-        course_id,
-        data,
-        current_user
-    )
+    return service.create_module(course_id, data, current_user)
 
 @router.get("/courses/{course_id}/modules", response_model=list[ModuleResponse], tags=["modules"])
 def get_modules(

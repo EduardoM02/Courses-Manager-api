@@ -1,5 +1,5 @@
 from app.core.exceptions import NotFoundError, ForbiddenError, ConflictError
-from app.models import User
+from app.models.user import User
 from app.models.module import Module
 from app.repositories.course_repository import CourseRepository
 from app.repositories.module_repository import ModuleRepository
@@ -56,6 +56,15 @@ class ModuleService:
             raise ForbiddenError("Not allowed")
 
         update_data = data.model_dump(exclude_unset=True)
+
+        if "order_index" in update_data and update_data["order_index"] != module.order_index:
+            existing_module = self.get_by_course_and_order(
+                module.course_id,
+                update_data["order_index"]
+            )
+
+            if existing_module:
+                raise ConflictError("Order already exists")
 
         for key, value in update_data.items():
             setattr(module, key, value)
